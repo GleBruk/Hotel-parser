@@ -1,0 +1,186 @@
+[
+    {
+        "name": "imangazaliev/didom",
+        "version": "1.16.3",
+        "version_normalized": "1.16.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Imangazaliev/DiDOM.git",
+            "reference": "7fc9cc1f519e5b2342c3ce00d98e53ed32b33011"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Imangazaliev/DiDOM/zipball/7fc9cc1f519e5b2342c3ce00d98e53ed32b33011",
+            "reference": "7fc9cc1f519e5b2342c3ce00d98e53ed32b33011",
+            "shasum": ""
+        },
+        "require": {
+            "ext-dom": "*",
+            "ext-iconv": "*",
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8"
+        },
+        "time": "2021-02-09T16:06:11+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "DiDom\\": "src/DiDom/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Imangazaliev Muhammad",
+                "email": "imangazalievm@gmail.com"
+            }
+        ],
+        "description": "Simple and fast HTML parser",
+        "homepage": "https://github.com/Imangazaliev/DiDOM",
+        "keywords": [
+            "didom",
+            "html",
+            "parser",
+            "xml"
+        ]
+    },
+    {
+        "name": "php-curl-class/php-curl-class",
+        "version": "9.1.0",
+        "version_normalized": "9.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-curl-class/php-curl-class.git",
+            "reference": "2e63c0d00a65ada99106def2ddba9d4b1ffa99d9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/2e63c0d00a65ada99106def2ddba9d4b1ffa99d9",
+            "reference": "2e63c0d00a65ada99106def2ddba9d4b1ffa99d9",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=7.0"
+        },
+        "require-dev": {
+            "ext-gd": "*",
+            "phpunit/phpunit": "*",
+            "squizlabs/php_codesniffer": "*"
+        },
+        "suggest": {
+            "ext-mbstring": "*"
+        },
+        "time": "2021-03-25T01:19:16+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Curl\\": "src/Curl/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Unlicense"
+        ],
+        "authors": [
+            {
+                "name": "Zach Borboa"
+            }
+        ],
+        "description": "PHP Curl Class makes it easy to send HTTP requests and integrate with web APIs.",
+        "homepage": "https://github.com/php-curl-class/php-curl-class",
+        "keywords": [
+            "API-Client",
+            "api",
+            "class",
+            "client",
+            "curl",
+            "framework",
+            "http",
+            "http-client",
+            "http-proxy",
+            "json",
+            "php",
+            "php-curl",
+            "php-curl-library",
+            "proxy",
+            "requests",
+            "restful",
+            "web-scraper",
+            "web-scraping ",
+            "web-service",
+            "xml"
+        ]
+    },
+    {
+        "name": "phpoffice/phpexcel",
+        "version": "1.8.2",
+        "version_normalized": "1.8.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPOffice/PHPExcel.git",
+            "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/1441011fb7ecdd8cc689878f54f8b58a6805f870",
+            "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "ext-xml": "*",
+            "ext-xmlwriter": "*",
+            "php": "^5.2|^7.0"
+        },
+        "require-dev": {
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2018-11-22T23:07:24+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PHPExcel": "Classes/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Maarten Balliauw",
+                "homepage": "http://blog.maartenballiauw.be"
+            },
+            {
+                "name": "Erik Tilt"
+            },
+            {
+                "name": "Franck Lefevre",
+                "homepage": "http://rootslabs.net"
+            },
+            {
+                "name": "Mark Baker",
+                "homepage": "http://markbakeruk.net"
+            }
+        ],
+        "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+        "homepage": "https://github.com/PHPOffice/PHPExcel",
+        "keywords": [
+            "OpenXML",
+            "excel",
+            "php",
+            "spreadsheet",
+            "xls",
+            "xlsx"
+        ],
+        "abandoned": "phpoffice/phpspreadsheet"
+    }
+]
