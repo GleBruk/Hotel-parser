@@ -30,22 +30,6 @@ class Curl extends Controller {
         fclose($f);
     }
 
-    /*function getCache($cacheId, $cashExpired=true, &$fileName='')
-    {
-        if (!$cashExpired) {
-            return;
-        }
-        $fileName = 'cash/'.md5($cacheId);
-        if (!file_exists($fileName)) {
-            return false;
-        }
-        $time = time() - filemtime($fileName);
-        if ($time > $cashExpired) {
-            return false;
-        }
-        return file_get_contents($fileName);
-    }*/
-
     function load($url, $cash=0){
         /*$this->fromCash = false;
         $cacheId = $url;
