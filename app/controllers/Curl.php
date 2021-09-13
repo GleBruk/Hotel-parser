@@ -15,7 +15,7 @@ class Curl extends Controller {
         if ($content == '') {
             return;
         }
-        if($date = null){
+        if($date == null){
             preg_match( '~fi/(.*)\.ru~',$url, $a);
             $fileName = 'cash/' . 'error ' . $a[1];
         } else {

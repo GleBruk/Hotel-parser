@@ -2,9 +2,9 @@
 require_once 'vendor/autoload.php';
 
 class Excel extends Controller {
-    /*public function getToExcel($newVals, $fileName){
+    public function getToExcel($newVals){
         $oldVals = [];
-        $xls = PHPExcel_IOFactory::load( $fileName . '.xls');
+        $xls = PHPExcel_IOFactory::load( 'table.xls');
         $sheet = $xls->getActiveSheet();
 
         //Считываем старые значения
@@ -145,7 +145,30 @@ class Excel extends Controller {
             $d++;
         }
 
-       //print_r($oldVals);
+       //print_r($oldVals);*/
+        $i = count($oldVals);
+        for($j = 0; $j < 366; $j++){
+            $t = strtotime('+1 year -' . $j . 'day 00:00:00');
+            $сheckin_year = date('y', $t);
+            $сheckin_month = date('m', $t);
+            $сheckin_monthday = date('d', $t);
+            $date = $сheckin_monthday . '.' . $сheckin_month . '.20' . $сheckin_year;
+            if($oldVals[$i - 1][1] == $date){
+                for($n = 0; $n <= $j; $n++) {
+                    $t = strtotime('+1 year -' . $j. ' day +' . $n . ' day 00:00:00');
+                    $сheckin_year = date('y', $t);
+                    $сheckin_month = date('m', $t);
+                    $сheckin_monthday = date('d', $t);
+                    $date = $сheckin_monthday . '.' . $сheckin_month . '.20' . $сheckin_year;
+                    $oldVals[$i - 1 + $n][0] = null;
+                    $oldVals[$i - 1 + $n][1] = $date;
+                }
+                break(1);
+            }
+        }
+
+
+
         //Записываем старые значения
         for($i = 0; $i < count($oldVals); $i++) {
             for($j = 0; $j < 256; $j++){
@@ -158,7 +181,7 @@ class Excel extends Controller {
             }
         }
 
-        $t = strtotime('+1 year 00:00:00');
+        /*$t = strtotime('+1 year 00:00:00');
         $сheckin_year = date('y', $t);
         $сheckin_month = date('m', $t);
         $сheckin_monthday = date('d', $t);
@@ -172,8 +195,8 @@ class Excel extends Controller {
                 $date);
             $sheet->getStyleByColumnAndRow(1, $i + 1)->getAlignment()->
             setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        }
-        /*Стили
+        }*/
+        //Стили
         for($i = 0; $i < count($oldVals[0]); $i++){
             $sheet->setCellValueByColumnAndRow(
                 $i,
@@ -192,8 +215,8 @@ class Excel extends Controller {
         $sheet->getRowDimension('1')->setRowHeight(100);
 
         $objWriter = new PHPExcel_Writer_Excel5($xls);
-        $objWriter->save($fileName . '.xls');
-    }*/
+        $objWriter->save('table.xls');
+    }
 
     public function getToChart($data, $load, $fileName){
         $ea = new PHPExcel();
@@ -235,27 +258,27 @@ class Excel extends Controller {
         );
 
         $xal = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Цены!$A$2:$A$15', null, 6),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Цены!$A$2:$A$31', null, 6),
         );//Ось X. Указывает координаты для её значения
 
 
         $dsv = array(
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$B$2:$B$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$C$2:$C$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$D$2:$D$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$E$2:$E$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$F$2:$F$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$G$2:$G$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$H$2:$H$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$I$2:$I$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$J$2:$J$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$K$2:$K$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$L$2:$L$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$M$2:$M$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$N$2:$N$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$O$2:$O$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$P$2:$P$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$Q$2:$Q$15', null, 14),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$B$2:$B$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$C$2:$C$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$D$2:$D$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$E$2:$E$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$F$2:$F$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$G$2:$G$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$H$2:$H$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$I$2:$I$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$J$2:$J$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$K$2:$K$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$L$2:$L$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$M$2:$M$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$N$2:$N$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$O$2:$O$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$P$2:$P$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$Q$2:$Q$31', null, 30),
         );
 
 
@@ -269,14 +292,11 @@ class Excel extends Controller {
 
         $chart = new \PHPExcel_Chart( 'chart1', $title, $legend, $pa, true,
             0, NULL, NULL );
-        $chart->setTopLeftPosition('S1');
-        $chart->setBottomRightPosition('AD25');
+        $chart->setTopLeftPosition('U1');
+        $chart->setBottomRightPosition('AS31');
         $ews->addChart($chart);
 
-        $hotelList2 = ['Отели','Guesthouse - Kuin Kotonaan','Hotel Leikari','Leikari "Nature" Bungalows with Terrace',
-            'Апартаменты', 'Kotkan Residenssi Apartments', 'Guest House Nina Art', 'Guesthouse Lokinlaulu', 'The Grand Karhu',
-            'Kartanohotelli Karhulan Hovi', 'Hotelli Merikotka', 'Hotelli Kotola', 'Kesähostelli Kärkisaari', 'Hotel Villa Vanessa',
-            'Beach Hotel Santalahti', 'Рынок', 'Выборка'];
+        $hotelList2 = ['Отели','Guesthouse - Kuin Kotonaan', 'Рынок', 'Рынок без KK и Лейкари', 'Выборка'];
         $arr2[0] = $hotelList2;
         for($i = 0; $i < count($load); $i++){
             $arr2[$i + 1] = $load[$i];
@@ -298,41 +318,19 @@ class Excel extends Controller {
             new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$D$1', null, 1),
             new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$E$1', null, 1),
             new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$F$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$G$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$H$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$I$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$J$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$K$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$L$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$M$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$N$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$O$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$P$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$Q$1', null, 1)
         );
 
         $xal2 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$A$2:$A$15', null, 6),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$A$2:$A$31', null, 6),
         );//Ось X. Указывает координаты для её значения
 
 
         $dsv2 = array(
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$B$2:$B$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$C$2:$C$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$D$2:$D$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$E$2:$E$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$F$2:$F$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$G$2:$G$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$H$2:$H$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$I$2:$I$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$J$2:$J$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$K$2:$K$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$L$2:$L$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$M$2:$M$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$N$2:$N$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$O$2:$O$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$P$2:$P$15', null, 14),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$Q$2:$Q$15', null, 14),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$B$2:$B$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$C$2:$C$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$D$2:$D$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$E$2:$E$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$F$2:$F$31', null, 30),
         );
 
 
@@ -347,7 +345,7 @@ class Excel extends Controller {
         $chart2 = new \PHPExcel_Chart( 'chart1', $title2, $legend2, $pa2, true,
             0, NULL, NULL );
         $chart2->setTopLeftPosition('S1');
-        $chart2->setBottomRightPosition('AM25');
+        $chart2->setBottomRightPosition('AQ26');
         $ews->addChart($chart2);
 
         $writer = \PHPExcel_IOFactory::createWriter($ea, 'Excel2007');
