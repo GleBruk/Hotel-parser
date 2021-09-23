@@ -11,6 +11,7 @@ class Booking extends Controller{
         $this->sample = $_POST['sample'];
         $this->checkoutIndex = $_POST['checkout_index'];
         $this->group_adults = $_POST['group_adults'];
+        $this->days_val = $_POST['days_val'];
     }
 
     public function index(){
@@ -21,23 +22,21 @@ class Booking extends Controller{
         $conModel = $this->model('ConstantsModel');
         $constants = $conModel->getConstants();
 
-        for ($i = 0; $i < 30; $i++) {
-            if ($i < 30) {//смотрим на 2 недели
-                $t = strtotime('+' . $i . ' day 00:00:00');
-                $сheckin_year = date('y', $t);
-                $сheckin_month = date('m', $t);
-                $сheckin_monthday = date('d', $t);
-                $t = strtotime('+' . ($i + $this->checkoutIndex) . ' day 00:00:00');
-                $checkout_year = date('y', $t);
-                $checkout_month = date('m', $t);
-                $checkout_monthday = date('d', $t);
-                $url = 'https://www.booking.com/searchresults.ru.html?label=gen173nr-1FCAEoggI46AdIM1gEaEiIAQGYASG4ARfIAQzYAQHoAQH4AQuIAgGoAgO4AsPX34QGwAIB0gIkMjAyZjAwYzItNDVhYS00YTY0LWJiNjYtZjJkM2U3YjE4ZWZk2AIG4AIB&sid=f3857b8c77f93c413cb4587518473e0c&sb=1&src=searchresults&src_elem=sb&error_url=https%3A%2F%2Fwww.booking.com%2Fsearchresults.ru.html%3Flabel%3Dgen173nr-1FCAEoggI46AdIM1gEaEiIAQGYASG4ARfIAQzYAQHoAQH4AQuIAgGoAgO4AsPX34QGwAIB0gIkMjAyZjAwYzItNDVhYS00YTY0LWJiNjYtZjJkM2U3YjE4ZWZk2AIG4AIB%3Bsid%3Df3857b8c77f93c413cb4587518473e0c%3Btmpl%3Dsearchresults%3Bac_click_type%3Db%3Bac_position%3D0%3Bclass_interval%3D1%3Bdest_id%3D-1372348%3Bdest_type%3Dcity%3Bdtdisc%3D0%3Bfrom_sf%3D1%3Bgroup_adults%3D2%3Bgroup_children%3D0%3Binac%3D0%3Bindex_postcard%3D0%3Blabel_click%3Dundef%3Bno_rooms%3D1%3Boffset%3D0%3Bpostcard%3D0%3Braw_dest_type%3Dcity%3Broom1%3DA%252CA%3Bsb_price_type%3Dtotal%3Bsearch_selected%3D1%3Bshw_aparth%3D1%3Bslp_r_match%3D0%3Bsrc%3Dindex%3Bsrc_elem%3Dsb%3Bsrpvid%3Dedf75d0156180246%3Bss%3D%25D0%259A%25D0%25BE%25D1%2582%25D0%25BA%25D0%25B0%252C%2520%25D0%25AE%25D0%25B6%25D0%25BD%25D0%25B0%25D1%258F%2520%25D0%25A4%25D0%25B8%25D0%25BD%25D0%25BB%25D1%258F%25D0%25BD%25D0%25B4%25D0%25B8%25D1%258F%252C%2520%25D0%25A4%25D0%25B8%25D0%25BD%25D0%25BB%25D1%258F%25D0%25BD%25D0%25B4%25D0%25B8%25D1%258F%3Bss_all%3D0%3Bss_raw%3D%25D0%259A%25D0%25BE%25D1%2582%25D0%25BA%25D0%25B0%3Bssb%3Dempty%3Bsshis%3D0%3Btop_ufis%3D1%26%3B&ss=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&is_ski_area=0&ssne=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&ssne_untouched=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&city=-1372348&checkin_year=20' . $сheckin_year . '&checkin_month=' . $сheckin_month . '&checkin_monthday=' . $сheckin_monthday . '&checkout_year=20' . $checkout_year . '&checkout_month=' . $checkout_month . '&checkout_monthday=' . $checkout_monthday . '&group_adults=' . $this->group_adults . '&group_children=0&no_rooms=1&sb_changed_dates=1&from_sf=1';
-                $date = $сheckin_monthday . '.' . $сheckin_month . '.20' . $сheckin_year;
-            }
+        for ($i = 0; $i < $this->days_val; $i++) {
+            $t = strtotime('+' . $i . ' day 00:00:00');
+            $сheckin_year = date('y', $t);
+            $сheckin_month = date('m', $t);
+            $сheckin_monthday = date('d', $t);
+            $t = strtotime('+' . ($i + $this->checkoutIndex) . ' day 00:00:00');
+            $checkout_year = date('y', $t);
+            $checkout_month = date('m', $t);
+            $checkout_monthday = date('d', $t);
+            $url = 'https://www.booking.com/searchresults.ru.html?label=gen173nr-1FCAEoggI46AdIM1gEaEiIAQGYASG4ARfIAQzYAQHoAQH4AQuIAgGoAgO4AsPX34QGwAIB0gIkMjAyZjAwYzItNDVhYS00YTY0LWJiNjYtZjJkM2U3YjE4ZWZk2AIG4AIB&sid=f3857b8c77f93c413cb4587518473e0c&sb=1&src=searchresults&src_elem=sb&error_url=https%3A%2F%2Fwww.booking.com%2Fsearchresults.ru.html%3Flabel%3Dgen173nr-1FCAEoggI46AdIM1gEaEiIAQGYASG4ARfIAQzYAQHoAQH4AQuIAgGoAgO4AsPX34QGwAIB0gIkMjAyZjAwYzItNDVhYS00YTY0LWJiNjYtZjJkM2U3YjE4ZWZk2AIG4AIB%3Bsid%3Df3857b8c77f93c413cb4587518473e0c%3Btmpl%3Dsearchresults%3Bac_click_type%3Db%3Bac_position%3D0%3Bclass_interval%3D1%3Bdest_id%3D-1372348%3Bdest_type%3Dcity%3Bdtdisc%3D0%3Bfrom_sf%3D1%3Bgroup_adults%3D2%3Bgroup_children%3D0%3Binac%3D0%3Bindex_postcard%3D0%3Blabel_click%3Dundef%3Bno_rooms%3D1%3Boffset%3D0%3Bpostcard%3D0%3Braw_dest_type%3Dcity%3Broom1%3DA%252CA%3Bsb_price_type%3Dtotal%3Bsearch_selected%3D1%3Bshw_aparth%3D1%3Bslp_r_match%3D0%3Bsrc%3Dindex%3Bsrc_elem%3Dsb%3Bsrpvid%3Dedf75d0156180246%3Bss%3D%25D0%259A%25D0%25BE%25D1%2582%25D0%25BA%25D0%25B0%252C%2520%25D0%25AE%25D0%25B6%25D0%25BD%25D0%25B0%25D1%258F%2520%25D0%25A4%25D0%25B8%25D0%25BD%25D0%25BB%25D1%258F%25D0%25BD%25D0%25B4%25D0%25B8%25D1%258F%252C%2520%25D0%25A4%25D0%25B8%25D0%25BD%25D0%25BB%25D1%258F%25D0%25BD%25D0%25B4%25D0%25B8%25D1%258F%3Bss_all%3D0%3Bss_raw%3D%25D0%259A%25D0%25BE%25D1%2582%25D0%25BA%25D0%25B0%3Bssb%3Dempty%3Bsshis%3D0%3Btop_ufis%3D1%26%3B&ss=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&is_ski_area=0&ssne=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&ssne_untouched=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&city=-1372348&checkin_year=20' . $сheckin_year . '&checkin_month=' . $сheckin_month . '&checkin_monthday=' . $сheckin_monthday . '&checkout_year=20' . $checkout_year . '&checkout_month=' . $checkout_month . '&checkout_monthday=' . $checkout_monthday . '&group_adults=' . $this->group_adults . '&group_children=0&no_rooms=1&sb_changed_dates=1&from_sf=1';
+            $date = $сheckin_monthday . '.' . $сheckin_month . '.20' . $сheckin_year;
 
             $data = $this->parseAll($url, $date);
 
-            if($this->group_adults == 1){
+            if($this->group_adults == 1 && $this->checkoutIndex == 1){
                 $excelData = $this->getExcelData($data, $date, $constants, $this->sample);
                 //print_r($excelData);
                 //echo "<br/>";
@@ -46,7 +45,9 @@ class Booking extends Controller{
 
             $chartData[] = $this->getChartData($date, $data, $this->sample);
 
-            $load[] = $this->getLoad($date, $data, $constants, $this->sample);
+            $chartData = $this->getLoad($date, $data, $constants, $this->sample);
+            $limitedLoad = $chartData[0];
+            $load = $chartData[1];
 
             $dataAll[] = $data;
         }
@@ -54,7 +55,7 @@ class Booking extends Controller{
         //print_r($chartData);
         //print_r($load);
         $chartName = $this->group_adults . 'adults-' . $this->checkoutIndex . 'days-chart';
-        $this->excel->getToChart($chartData, $load, $chartName);
+        $this->excel->getToChart($chartData, $limitedLoad, $load, $chartName);
         //$this->view('home/index', $data);
         //print_r($chartData);
         //print_r($load);
@@ -112,7 +113,7 @@ class Booking extends Controller{
             return $dataAll;
         } catch (Exception $e) {
             // код который может обработать исключение
-            print_r($error);
+            //print_r($error);
             echo $e->getMessage();
             $ei = $ei + 1;
             return @$this->parseAll($url, $date, $ei);
@@ -292,7 +293,7 @@ class Booking extends Controller{
             }
 
             for($i = 0; $i < count($apartmentsList); $i++){
-                if ($hotel['hotel_name'] == $apartmentsList[$i]){
+                if($hotel['hotel_name'] == $apartmentsList[$i]){
                     $apartmentPrice = null;
                     foreach ($hotel['rooms'] as $room) {
                         if ($room['price'] < $apartmentPrice && $room['capacity'] >= $this->group_adults || $apartmentPrice == null && $room['capacity'] >= $this->group_adults) {
@@ -320,7 +321,7 @@ class Booking extends Controller{
             }
         }
 
-        $marketPrice = round(array_sum($chartData)/count($chartData), 0);
+        $marketPrice = round(array_sum($chartData)/(count($chartData) - 1), 0);
         $chartData[15] =  $marketPrice;
 
         for($i = 0; $i < 15; $i++){
@@ -365,6 +366,10 @@ class Booking extends Controller{
         array_splice($conArr, 9, 1);
         print_r($conArr);
 
+        $hotelsSample = explode(', ', $sample);
+        $sampleRoomsSum = 0;
+        $sampleRoomsConstants = 0;
+
         foreach($data as $hotel) {
             //$apartmentsSum = null;
             for ($i = 0; $i < count($hotelList); $i++) {
@@ -377,8 +382,19 @@ class Booking extends Controller{
                             $freeRooms = $freeRooms + $room['roomNum'];
                         }
                     }
-                    $marketRoomSum = $marketRoomSum + $freeRooms;
-                    if($hotel['hotel_name'] != 'Hotel Leikari' && $hotel['hotel_name'] != 'Guesthouse - Kuin Kotonaan'){
+
+                    for ($j = 0; $j < count($hotelsSample); $j++) {
+                        if ($hotelsSample[$j] == $hotel['hotel_name']){
+                            $sampleRoomsSum = $sampleRoomsSum + $freeRooms;
+                            $sampleRoomsConstants = $sampleRoomsConstants + $conArr[$i];
+                        }
+                    }
+
+                    if($hotel['hotel_name'] != 'Kotkan Residenssi Apartments'){
+                        $marketRoomSum = $marketRoomSum + $freeRooms;
+                    }
+
+                    if($hotel['hotel_name'] != 'Hotel Leikari' && $hotel['hotel_name'] != 'Guesthouse - Kuin Kotonaan' && $hotel['hotel_name'] != 'Kotkan Residenssi Apartments'){
                         $marketRoomSumLimited = $marketRoomSumLimited + $freeRooms;
                     }
 
@@ -399,15 +415,16 @@ class Booking extends Controller{
 
                         }
                     } else{
+                        $load[$i + 1] = round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100;//Загрузка
+
                         echo "<br/>" . $date;
                         echo "<br/><a href='https://" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
-                        $load[$i + 1] = round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100;//Загрузка
                         echo "<br/>Константа " . $conArr[$i] . 'Число комнат ' . $freeRooms;
                     }
                 }
             }
-            for($k = 0; $k < count($apartmentsList); $k++) {
-                if ($hotel['hotel_name'] == $apartmentsList[$k]) {
+            for($i = 0; $i < count($apartmentsList); $i++) {
+                if ($hotel['hotel_name'] == $apartmentsList[$i]) {
                     $previousRoomType = null;
                     $apartments = null;
                     foreach ($hotel['rooms'] as $room) {
@@ -421,8 +438,8 @@ class Booking extends Controller{
                 }
             }
 
-            for($k = 0; $k < count($kraHotels); $k++){
-                if ($hotel['hotel_name'] == $kraHotels[$k]){
+            for($i = 0; $i < count($kraHotels); $i++){
+                if ($hotel['hotel_name'] == $kraHotels[$i]){
                     $previousRoomType = null;
                     $kraRooms = null;
                     foreach ($hotel['rooms'] as $room) {
@@ -440,6 +457,17 @@ class Booking extends Controller{
         $marketRoomSum = $marketRoomSum + $apartmentsSum + $kraSum;
         $marketRoomSumLimited = $marketRoomSumLimited + $apartmentsSum + $kraSum;
 
+        for ($i = 0; $i < count($hotelsSample); $i++) {
+            if ($hotelsSample[$i] == 'Апартаменты'){
+                $sampleRoomsSum = $sampleRoomsSum + $apartmentsSum;
+                $sampleRoomsConstants = $sampleRoomsConstants + $conArr[3];
+            }
+            if ($hotelsSample[$i] == 'Kotkan Residenssi Apartments'){
+                $sampleRoomsSum = $sampleRoomsSum + $kraSum;
+                $sampleRoomsConstants = $sampleRoomsConstants + $conArr[4];
+            }
+        }
+
         echo "<br/>Апартаменты";
         echo "<br/>Константа " . $conArr[3] . 'Число комнат ' . $apartmentsSum;
         echo "<br/>KRA";
@@ -453,29 +481,27 @@ class Booking extends Controller{
 
         ksort($load);
 
-        $hotelsSample = explode(', ', $sample);
-        for ($i = 0; $i < count($hotelsSample); $i++) {
-            for ($j = 0; $j < count($hotelList); $j++){
-                $loadArr[$j] = $load[$j + 1];
-                if ($hotelsSample[$i] == $hotelList[$j]){
-                    $sampleLoad[] = $load[$j + 1];
-                }
+        if($hotelsSample[0] != null){
+            if($sampleRoomsSum == 0){
+                $load[16] = '100';
+            } else {
+                $load[16] = round(($sampleRoomsConstants - $sampleRoomsSum)/$sampleRoomsConstants, 2) * 100;
             }
-        }
-        if($sampleLoad != null){
-            $load[16] = round(array_sum($sampleLoad)/count($sampleLoad), 0);
         }else{
             $load[16] = '0';
         }
 
         $load[15] = round((array_sum($conArr) - $marketRoomSum) / array_sum($conArr), 2) * 100;
 
-        $chartData[0] = $load[0];
-        $chartData[1] = $load[1];
-        $chartData[2] = $load[15];
+        $loadLimited[0] = $load[0];
+        $loadLimited[1] = $load[1];
+        $loadLimited[2] = $load[15];
         array_splice($conArr, 0, 2);
-        $chartData[3] = round((array_sum($conArr) - $marketRoomSumLimited)/array_sum($conArr), 2) * 100;
-        $chartData[4] = $load[16];
+        $loadLimited[3] = round((array_sum($conArr) - $marketRoomSumLimited)/array_sum($conArr), 2) * 100;
+        $loadLimited[4] = $load[16];
+
+        $chartData[0] = $loadLimited;
+        $chartData[1] = $load;
 
         return $chartData;
     }
@@ -549,6 +575,11 @@ class Booking extends Controller{
 
         //print_r($constants);
         //echo "<br/>";
+
+        $hotelsSample = explode(', ', $sample);
+        $sampleRoomsSum = 0;
+        $sampleRoomsConstants = 0;
+
         foreach($data as $hotel) {
             for ($i = 0; $i < count($hotelList); $i++) {
                 if ($hotel['hotel_name'] == $hotelList[$i]){
@@ -560,6 +591,14 @@ class Booking extends Controller{
                             $newData[$roomNumColumnIndex[$i]] = $newData[$roomNumColumnIndex[$i]] + $room['roomNum'];//Комнаты в наличии
                         }
                     }
+
+                    for ($j = 0; $j < count($hotelsSample); $j++) {
+                        if ($hotelsSample[$j] == $hotel['hotel_name']){
+                            $sampleRoomsSum = $sampleRoomsSum + $newData[$roomNumColumnIndex[$i]];
+                            $sampleRoomsConstants = $sampleRoomsConstants + $constants[$i];
+                        }
+                    }
+
                     $newData[$loadIndex[$i]] = round((($constants[$i] - $newData[$roomNumColumnIndex[$i]]) / $constants[$i]), 2) * 100 . '%';//Загрузка
                     $newData[$changesColumnNums[$i]] = null;//Изменения
                     $newData[$maColumnsNums[$i]] = null;//Ма30
@@ -580,6 +619,14 @@ class Booking extends Controller{
                         $availableRoomsNum = $availableRoomsNum + $room['roomNum'];
                     }
                 }
+
+                for ($j = 0; $j < count($hotelsSample); $j++) {
+                    if ($hotelsSample[$j] == $hotel['hotel_name']){
+                        $sampleRoomsSum = $sampleRoomsSum + $availableRoomsNum;
+                        $sampleRoomsConstants = $sampleRoomsConstants + $gKKcon;
+                    }
+                }
+
                 $newData[3] = $availableRoomsNum;
                 $newData[6] = round((($gKKcon - $newData[3]) / $gKKcon), 2) * 100 . '%';
                 $newData[7] = null;
@@ -594,51 +641,75 @@ class Booking extends Controller{
                         $availableRoomsNum = $availableRoomsNum + $room['roomNum'];
                     }
                 }
+
+                for ($j = 0; $j < count($hotelsSample); $j++) {
+                    if ($hotelsSample[$j] == $hotel['hotel_name']){
+                        $sampleRoomsSum = $sampleRoomsSum + $availableRoomsNum;
+                        $sampleRoomsConstants = $sampleRoomsConstants + $kar;
+                    }
+                }
+
                 $newData[43] = $availableRoomsNum;
                 $newData[44] = round((($kar - $newData[43]) / $kar), 2) * 100 . '%';
                 $newData[45] = null;
                 $newData[46] = null;
                 $newData[47] = null;
+
+                //echo 'Kartanohotelli Karhulan Hovi ' . $newData[43] . "<br>";
             }
+
+            for($i = 0; $i < count($apartmentsList); $i++) {
+                if ($hotel['hotel_name'] == $apartmentsList[$i]) {
+                    $previousRoomType = null;
+                    $apartments = null;
+                    foreach ($hotel['rooms'] as $room) {
+                        if ($room['room_type'] != $previousRoomType) {
+                            $previousRoomType = $room['room_type'];
+                            $apartments = $apartments + $room['roomNum'];
+                        }
+                    }
+
+                    $apartmentsSum = $apartmentsSum + $apartments;
+                    $newData[18] = $apartmentsSum;
+                    $newData[19] = round((($constants[2] - $apartmentsSum) / $constants[2]), 2) * 100;//Загрузка
+                    $newData[20] = null;
+                    $newData[21] = null;
+                    $newData[22] = null;
+                }
+            }
+
+            for($i = 0; $i < count($kraHotels); $i++){
+                if ($hotel['hotel_name'] == $kraHotels[$i]){
+                    $previousRoomType = null;
+                    $kraRooms = null;
+                    foreach ($hotel['rooms'] as $room) {
+                        if ($room['room_type'] != $previousRoomType) {
+                            $previousRoomType = $room['room_type'];
+                            $kraRooms = $kraRooms + $room['roomNum'];
+                            //echo $kraRooms;
+                        }
+                    }
+
+                    $kraSum = $kraSum + $kraRooms;
+                    $newData[23] = $kraSum;
+                    $newData[24] = round((($constants[3] - $kraSum) / $constants[3]), 2) * 100;//Загрузка
+                    $newData[25] = null;//Изменения
+                    $newData[26] = null;//Ма30
+                    $newData[27] = null;//Разность Ма30
+                }
+            }
+
             $checkedHotels[] = $hotel['hotel_name'];
         }
 
-        for($i = 0; $i < count($apartmentsList); $i++) {
-            if ($hotel['hotel_name'] == $apartmentsList[$i]) {
-                $previousRoomType = null;
-                $apartments = null;
-                foreach ($hotel['rooms'] as $room) {
-                    if ($room['room_type'] != $previousRoomType) {
-                        $previousRoomType = $room['room_type'];
-                        $apartments = $apartments + $room['roomNum'];
-                    }
-                }
-                $apartmentsSum = $apartmentsSum + $apartments;
-                $newData[18] = $apartmentsSum;
-                $newData[19] = round((($constants[3] - $apartmentsSum) / $constants[3]), 2) * 100;//Загрузка
-                $newData[20] = null;
-                $newData[21] = null;
-                $newData[22] = null;
+        for ($i = 0; $i < count($hotelsSample); $i++) {
+            if ($hotelsSample[$i] == 'Апартаменты'){
+                $sampleRoomsSum = $sampleRoomsSum + $apartmentsSum;
+                $sampleRoomsConstants = $sampleRoomsConstants + $constants[2];
             }
-        }
-
-        for($i = 0; $i < count($kraHotels); $i++){
-            if ($hotel['hotel_name'] == $kraHotels[$i]){
-                $previousRoomType = null;
-                $kraRooms = null;
-                foreach ($hotel['rooms'] as $room) {
-                    if ($room['room_type'] != $previousRoomType) {
-                        $previousRoomType = $room['room_type'];
-                        $kraRooms = $kraRooms + $room['roomNum'];
-                        //echo $kraRooms;
-                    }
-                }
-                $kraSum = $kraSum + $kraRooms;
-                $newData[23] = $kraSum;
-                $newData[24] = round((($constants[4] - $kraSum) / $constants[4]), 2) * 100;//Загрузка
-                $newData[25] = null;//Изменения
-                $newData[26] = null;//Ма30
-                $newData[27] = null;//Разность Ма30
+            if ($hotelsSample[$i] == 'Kotkan Residenssi Apartments'){
+                $sampleRoomsSum = $sampleRoomsSum + $kraSum;
+                $sampleRoomsConstants = $sampleRoomsConstants + $constants[4];
             }
         }
 
@@ -646,16 +717,21 @@ class Booking extends Controller{
         array_splice($constants, 8, 1);
         $conSum = array_sum($constants) + $gKKcon + $kar;
 
-        $availableRoomsSum = 0;
+        $availableRoomsSum = $newData[3];
         for($i = 0; $i < count($roomNumColumnIndex); $i++){
             $availableRoomsSum = $availableRoomsSum + $newData[$roomNumColumnIndex[$i]];
         }
 
         $newData[73] = round(($conSum - $availableRoomsSum)/$conSum, 2) * 100 . '%';
-        if($sample != null){
-            $this->getSampleData($sample, $newData);
-        } else{
-            echo 'v';
+
+        if($hotelsSample[0] != null){
+            if($sampleRoomsSum == 0){
+                $newData[76] = '100';
+            } else {
+                $newData[76] = round(($sampleRoomsConstants - $sampleRoomsSum)/$sampleRoomsConstants, 2) * 100;
+            }
+        }else{
+            $newData[76] = '0';
         }
 
         $this->getMissingHotels($checkedHotels, $newData);
@@ -663,16 +739,16 @@ class Booking extends Controller{
     }
 
     private function getMissingHotels($hotelList, &$newData){
-        $setHotelsList = ['Hotel Leikari', 'Leikari "Nature" Bungalows with Terrace',
+        $setHotelsList = ['Hotel Leikari', 'Leikari "Nature" Bungalows with Terrace', /*'Апартаменты',*/
             'Kotkan Residenssi Apartments', 'Guest House Nina Art', 'Guesthouse Lokinlaulu', 'The Grand Karhu',
             'Kartanohotelli Karhulan Hovi', 'Hotelli Merikotka', 'Hotelli Kotola', 'Kesähostelli Kärkisaari',
             'Hotel Villa Vanessa', 'Beach Hotel Santalahti'];
 
-        $roomNumColumnIndex = [8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58, 63, 68];// Координаты комнат в наличии
-        $loadIndex = [9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69];// Координаты Загрузка
-        $changesColumnNums = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70];// Координаты Изменения
-        $maColumnsNums = [11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66, 71];// Координаты МА 30
-        $changesMaColumnIndex = [12, 17, 22, 27, 32, 37, 42, 47, 52, 57, 62, 67, 72];// Координаты Разность МА 30
+        $roomNumColumnIndex = [8, 13, /*18,*/ 23, 28, 33, 38, 43, 48, 53, 58, 63, 68];// Координаты комнат в наличии
+        $loadIndex = [9, 14, /*19,*/ 24, 29, 34, 39, 44, 49, 54, 59, 64, 69];// Координаты Загрузка
+        $changesColumnNums = [10, 15, /*20,*/ 25, 30, 35, 40, 45, 50, 55, 60, 65, 70];// Координаты Изменения
+        $maColumnsNums = [11, 16, /*21,*/ 26, 31, 36, 41, 46, 51, 56, 61, 66, 71];// Координаты МА 30
+        $changesMaColumnIndex = [12, 17, /*22,*/ 27, 32, 37, 42, 47, 52, 57, 62, 67, 72];// Координаты Разность МА 30
 
         for($i = 0; $i < count($setHotelsList); $i++) {
             if (in_array($setHotelsList[$i], $hotelList) == false) {

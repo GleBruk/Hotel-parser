@@ -2,6 +2,10 @@
 require_once 'vendor/autoload.php';
 
 class Excel extends Controller {
+    function __construct() {
+        $this->days_val = $_POST['days_val'];
+    }
+
     public function getToExcel($newVals){
         $oldVals = [];
         $xls = PHPExcel_IOFactory::load( 'table.xls');
@@ -89,37 +93,50 @@ class Excel extends Controller {
                         $oldVals[$i][$changesMaColumnIndex[$j - 1]] = $myMa[0] - $otherMa[0];
                     }
                 }
-                //Рынок
+
+                //Рынок и выборка
+
                 //print_r($newVals);
+
                 //Загрузка рынка
                 $oldVals[$i][73] = $newVals[73];
 
-                if($i < 31) {
-                    for ($k = $i - 1; $k > 0; $k--) {
-                        preg_match('~\d+~',$oldVals[$k][73], $a);
-                        if($a[0] != '') {
-                            $loadArr[] = $a[0];
-                        }
-                    }
-                } else{
-                    $n = 0;
-                    for ($k = $i - 1; $n < 30; $k--) {
-                        preg_match('~\d+~',$oldVals[$k][73], $a);
-                        if($a[0] != '') {
-                            $loadArr[] = $a[0];
-                        }
-                        $n++;
-                    }
-                }
-                preg_match('~\d+~', $newVals[73], $a);
-                $currentLoad = $a[0];
-                $ma = ($currentLoad + array_sum($loadArr)) / (count($loadArr) + 1);
-                $oldVals[$i][74] = round($ma, 2) . '%';
+                //Загрузка выборки
+                $oldVals[$i][76] = $newVals[76];
 
-                //$newVals[70] = //Разность МА 30
-                preg_match('~\d+~',$oldVals[$i][7], $myMa);
-                preg_match('~\d+~',$oldVals[$i][74], $otherMa);
-                $oldVals[$i][75] = $myMa[0] - $otherMa[0];
+                $lArr = [73, 76];
+                $maArr = [74, 77];
+                $changesArr = [75, 78];
+
+
+                for($j = 0; $j < count($lArr); $j++){
+                    if($i < 31) {
+                        for ($k = $i - 1; $k > 0; $k--) {
+                            preg_match('~\d+~',$oldVals[$k][$lArr[$j]], $a);
+                            if($a[0] != '') {
+                                $loadArr[] = $a[0];
+                            }
+                        }
+                    } else{
+                        $n = 0;
+                        for ($k = $i - 1; $n < 30; $k--) {
+                            preg_match('~\d+~',$oldVals[$k][$lArr[$j]], $a);
+                            if($a[0] != '') {
+                                $loadArr[] = $a[0];
+                            }
+                            $n++;
+                        }
+                    }
+                    preg_match('~\d+~', $newVals[$lArr[$j]], $a);
+                    $currentLoad = $a[0];
+                    $ma = ($currentLoad + array_sum($loadArr)) / (count($loadArr) + 1);
+                    $oldVals[$i][$maArr[$j]] = round($ma, 2) . '%';
+
+                    //$newVals[70] = //Разность МА 30
+                    preg_match('~\d+~',$oldVals[$i][7], $myMa);
+                    preg_match('~\d+~',$oldVals[$i][$maArr[$j]], $otherMa);
+                    $oldVals[$i][$changesArr[$j]] = $myMa[0] - $otherMa[0];
+                }
             }
         }
 
@@ -218,7 +235,7 @@ class Excel extends Controller {
         $objWriter->save('table.xls');
     }
 
-    public function getToChart($data, $load, $fileName){
+    public function getToChart($data, $limitedLoad, $load, $fileName){
         $ea = new PHPExcel();
         $hotelList = ['Отели','Guesthouse - Kuin Kotonaan','Hotel Leikari','Leikari "Nature" Bungalows with Terrace',
             'Апартаменты', 'Kotkan Residenssi Apartments', 'Guest House Nina Art', 'Guesthouse Lokinlaulu', 'The Grand Karhu',
@@ -258,27 +275,27 @@ class Excel extends Controller {
         );
 
         $xal = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Цены!$A$2:$A$31', null, 6),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Цены!$A$2:$A$'.($this->days_val + 1), null, 6),
         );//Ось X. Указывает координаты для её значения
 
 
         $dsv = array(
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$B$2:$B$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$C$2:$C$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$D$2:$D$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$E$2:$E$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$F$2:$F$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$G$2:$G$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$H$2:$H$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$I$2:$I$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$J$2:$J$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$K$2:$K$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$L$2:$L$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$M$2:$M$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$N$2:$N$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$O$2:$O$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$P$2:$P$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$Q$2:$Q$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$B$2:$B$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$C$2:$C$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$D$2:$D$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$E$2:$E$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$F$2:$F$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$G$2:$G$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$H$2:$H$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$I$2:$I$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$J$2:$J$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$K$2:$K$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$L$2:$L$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$M$2:$M$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$N$2:$N$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$O$2:$O$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$P$2:$P$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Цены!$Q$2:$Q$'.($this->days_val + 1), null, $this->days_val),
         );
 
 
@@ -308,7 +325,7 @@ class Excel extends Controller {
         $ea->createSheet();
         $ews = $ea->setActiveSheetIndex(1);
         //$ews = $ea->getActiveSheet();
-        $ews->setTitle('Загрузка');
+        $ews->setTitle('Ограниченная загрузка');
         $ews->fromArray($arr2);
 
 
@@ -321,16 +338,16 @@ class Excel extends Controller {
         );
 
         $xal2 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$A$2:$A$31', null, 6),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$A$2:$A$'.($this->days_val + 1), null, 6),
         );//Ось X. Указывает координаты для её значения
 
 
         $dsv2 = array(
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$B$2:$B$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$C$2:$C$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$D$2:$D$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$E$2:$E$31', null, 30),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$F$2:$F$31', null, 30),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$B$2:$B$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$C$2:$C$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$D$2:$D$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$E$2:$E$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$F$2:$F$'.($this->days_val + 1), null, $this->days_val),
         );
 
 
@@ -344,10 +361,88 @@ class Excel extends Controller {
 
         $chart2 = new \PHPExcel_Chart( 'chart1', $title2, $legend2, $pa2, true,
             0, NULL, NULL );
-        $chart2->setTopLeftPosition('S1');
-        $chart2->setBottomRightPosition('AQ26');
+        $chart2->setTopLeftPosition('F1');
+        $chart2->setBottomRightPosition('BD26');
         $ews->addChart($chart2);
 
+        /**/
+        $hotelList3 = ['Отели','Guesthouse - Kuin Kotonaan','Hotel Leikari','Leikari "Nature" Bungalows with Terrace',
+            'Апартаменты', 'Kotkan Residenssi Apartments', 'Guest House Nina Art', 'Guesthouse Lokinlaulu', 'The Grand Karhu',
+            'Kartanohotelli Karhulan Hovi', 'Hotelli Merikotka', 'Hotelli Kotola', 'Kesähostelli Kärkisaari', 'Hotel Villa Vanessa',
+            'Beach Hotel Santalahti', 'Рынок', 'Выборка'];
+        $arr3[0] = $hotelList3;
+        for($i = 0; $i < count($load); $i++){
+            $arr3[$i + 1] = $load[$i];
+        }
+
+        //print_r($hotelList);
+        //print_r($data);
+
+        $ea->createSheet();
+        $ews = $ea->setActiveSheetIndex(2);
+        //$ews = $ea->getActiveSheet();
+        $ews->setTitle('Загрузка');
+        $ews->fromArray($arr3);
+
+
+        $dsl3 = array(
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$B$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$C$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$D$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$E$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$F$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$G$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$H$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$I$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$J$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$K$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$L$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$M$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$N$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$O$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$P$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$Q$1', null, 1)
+        );
+
+        $xal3 = array(
+            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$A$2:$A$'.($this->days_val + 1), null, 6),
+        );//Ось X. Указывает координаты для её значения
+
+
+        $dsv3 = array(
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$B$2:$B$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$C$2:$C$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$D$2:$D$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$E$2:$E$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$F$2:$F$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$G$2:$G$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$H$2:$H$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$I$2:$I$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$J$2:$J$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$K$2:$K$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$L$2:$L$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$M$2:$M$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$N$2:$N$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$O$2:$O$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$P$2:$P$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$Q$2:$Q$'.($this->days_val + 1), null, $this->days_val),
+        );
+
+
+        $ds3 = new PHPExcel_Chart_DataSeries( PHPExcel_Chart_DataSeries::TYPE_BARCHART,
+            PHPExcel_Chart_DataSeries::GROUPING_STANDARD, range(0, count($dsv3) - 1),
+            $dsl3, $xal3, $dsv3);//макет диаграммы
+
+        $pa3 = new \PHPExcel_Chart_PlotArea(NULL, array($ds3));
+        $legend3 = new \PHPExcel_Chart_Legend(\PHPExcel_Chart_Legend::POSITION_RIGHT, NULL, false);
+        $title3 = new \PHPExcel_Chart_Title('Загрузка');
+
+        $chart3 = new \PHPExcel_Chart( 'chart1', $title3, $legend3, $pa3, true,
+            0, NULL, NULL );
+        $chart3->setTopLeftPosition('S1');
+        $chart3->setBottomRightPosition('BQ26');
+        $ews->addChart($chart3);
+        /**/
         $writer = \PHPExcel_IOFactory::createWriter($ea, 'Excel2007');
         $writer->setIncludeCharts(true);
         $writer->save($fileName . '.xlsx');

@@ -19,12 +19,16 @@ require_once 'vendor/autoload.php';
     <?php require 'public/blocks/header.php'?>
     <h1>Парсер Букинг</h1>
     <form class="form-inline" action="/booking/parse" method="post">
+        <label>Период (в днях)</label>
+        <input type="text" class="form-control" name="days_val" value="30" style="width:100px;">
+        <br>
+        <br>
         <label>Число дней</label>
         <input type="text" class="form-control" name="checkout_index" value="1" style="width:100px;">
         <br>
         <br>
         <label>Число взрослых</label>
-        <input type="text" class="form-control" name="group_adults" value="2" style="width:100px;">
+        <input type="text" class="form-control" name="group_adults" value="1" style="width:100px;">
         <br>
         <br>
         <label>Выборка</label>
