@@ -34,6 +34,20 @@ class Booking extends Controller{
             $url = 'https://www.booking.com/searchresults.ru.html?label=gen173nr-1FCAEoggI46AdIM1gEaEiIAQGYASG4ARfIAQzYAQHoAQH4AQuIAgGoAgO4AsPX34QGwAIB0gIkMjAyZjAwYzItNDVhYS00YTY0LWJiNjYtZjJkM2U3YjE4ZWZk2AIG4AIB&sid=f3857b8c77f93c413cb4587518473e0c&sb=1&src=searchresults&src_elem=sb&error_url=https%3A%2F%2Fwww.booking.com%2Fsearchresults.ru.html%3Flabel%3Dgen173nr-1FCAEoggI46AdIM1gEaEiIAQGYASG4ARfIAQzYAQHoAQH4AQuIAgGoAgO4AsPX34QGwAIB0gIkMjAyZjAwYzItNDVhYS00YTY0LWJiNjYtZjJkM2U3YjE4ZWZk2AIG4AIB%3Bsid%3Df3857b8c77f93c413cb4587518473e0c%3Btmpl%3Dsearchresults%3Bac_click_type%3Db%3Bac_position%3D0%3Bclass_interval%3D1%3Bdest_id%3D-1372348%3Bdest_type%3Dcity%3Bdtdisc%3D0%3Bfrom_sf%3D1%3Bgroup_adults%3D2%3Bgroup_children%3D0%3Binac%3D0%3Bindex_postcard%3D0%3Blabel_click%3Dundef%3Bno_rooms%3D1%3Boffset%3D0%3Bpostcard%3D0%3Braw_dest_type%3Dcity%3Broom1%3DA%252CA%3Bsb_price_type%3Dtotal%3Bsearch_selected%3D1%3Bshw_aparth%3D1%3Bslp_r_match%3D0%3Bsrc%3Dindex%3Bsrc_elem%3Dsb%3Bsrpvid%3Dedf75d0156180246%3Bss%3D%25D0%259A%25D0%25BE%25D1%2582%25D0%25BA%25D0%25B0%252C%2520%25D0%25AE%25D0%25B6%25D0%25BD%25D0%25B0%25D1%258F%2520%25D0%25A4%25D0%25B8%25D0%25BD%25D0%25BB%25D1%258F%25D0%25BD%25D0%25B4%25D0%25B8%25D1%258F%252C%2520%25D0%25A4%25D0%25B8%25D0%25BD%25D0%25BB%25D1%258F%25D0%25BD%25D0%25B4%25D0%25B8%25D1%258F%3Bss_all%3D0%3Bss_raw%3D%25D0%259A%25D0%25BE%25D1%2582%25D0%25BA%25D0%25B0%3Bssb%3Dempty%3Bsshis%3D0%3Btop_ufis%3D1%26%3B&ss=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&is_ski_area=0&ssne=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&ssne_untouched=%D0%9A%D0%BE%D1%82%D0%BA%D0%B0&city=-1372348&checkin_year=20' . $сheckin_year . '&checkin_month=' . $сheckin_month . '&checkin_monthday=' . $сheckin_monthday . '&checkout_year=20' . $checkout_year . '&checkout_month=' . $checkout_month . '&checkout_monthday=' . $checkout_monthday . '&group_adults=' . $this->group_adults . '&group_children=0&no_rooms=1&sb_changed_dates=1&from_sf=1';
             $date = $сheckin_monthday . '.' . $сheckin_month . '.20' . $сheckin_year;
 
+            $days = [
+                'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
+            ];
+            $day = $days[date("w", strtotime($date))];
+            if($day == 'Понедельник' || $day == 'Четверг'){
+                unlink('./././log.txt');
+
+                $includes = glob('./././cash/*');
+                foreach ($includes as $include){
+                    unlink($include);
+                }
+                rmdir('./././cash');
+            }
+
             $data = $this->parseAll($url, $date);
 
             if($this->group_adults == 1 && $this->checkoutIndex == 1){
@@ -45,9 +59,9 @@ class Booking extends Controller{
 
             $chartData[] = $this->getChartData($date, $data, $this->sample);
 
-            $chartData = $this->getLoad($date, $data, $constants, $this->sample);
-            $limitedLoad = $chartData[0];
-            $load = $chartData[1];
+            $loadData = $this->getLoad($date, $data, $constants, $this->sample);
+            $limitedLoad[] = $loadData[0];
+            $load[] = $loadData[1];
 
             $dataAll[] = $data;
         }
@@ -407,15 +421,15 @@ class Booking extends Controller{
                         echo "<br/>" . $date;
                         echo "<br/><a href='https://" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
                         if($day == 'Воскресенье'){
-                            $load[$i + 1] = round((($karSunCon - $freeRooms) / $karSunCon), 2) * 100;
+                            $load[$i + 1] = strval(round((($karSunCon - $freeRooms) / $karSunCon), 2) * 100);
                             echo "<br/>Константа " . $karSunCon . 'Число комнат ' . $freeRooms;
                         } else{
-                            $load[$i + 1] = round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100;
+                            $load[$i + 1] = strval(round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100);
                             echo "<br/>Константа " . $conArr[$i] . 'Число комнат ' . $freeRooms;
 
                         }
                     } else{
-                        $load[$i + 1] = round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100;//Загрузка
+                        $load[$i + 1] = strval(round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100);//Загрузка
 
                         echo "<br/>" . $date;
                         echo "<br/><a href='https://" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
@@ -434,7 +448,7 @@ class Booking extends Controller{
                         }
                     }
                     $apartmentsSum = $apartmentsSum + $apartments;
-                    $load[4] = round((($conArr[3] - $apartmentsSum) / $conArr[3]), 2) * 100;//Загрузка
+                    $load[4] = strval(round((($conArr[3] - $apartmentsSum) / $conArr[3]), 2) * 100);//Загрузка
                 }
             }
 
@@ -450,7 +464,7 @@ class Booking extends Controller{
                         }
                     }
                     $kraSum = $kraSum + $kraRooms;
-                    $load[5] = round((($conArr[4] - $kraSum) / $conArr[4]), 2) * 100;//Загрузка
+                    $load[5] = strval(round((($conArr[4] - $kraSum) / $conArr[4]), 2) * 100);//Загрузка
                 }
             }
         }
@@ -481,23 +495,23 @@ class Booking extends Controller{
 
         ksort($load);
 
+        $load[15] = strval(round((array_sum($conArr) - $marketRoomSum) / array_sum($conArr), 2) * 100);
+
         if($hotelsSample[0] != null){
             if($sampleRoomsSum == 0){
                 $load[16] = '100';
             } else {
-                $load[16] = round(($sampleRoomsConstants - $sampleRoomsSum)/$sampleRoomsConstants, 2) * 100;
+                $load[16] = strval(round(($sampleRoomsConstants - $sampleRoomsSum)/$sampleRoomsConstants, 2) * 100);
             }
         }else{
             $load[16] = '0';
         }
 
-        $load[15] = round((array_sum($conArr) - $marketRoomSum) / array_sum($conArr), 2) * 100;
-
         $loadLimited[0] = $load[0];
         $loadLimited[1] = $load[1];
         $loadLimited[2] = $load[15];
         array_splice($conArr, 0, 2);
-        $loadLimited[3] = round((array_sum($conArr) - $marketRoomSumLimited)/array_sum($conArr), 2) * 100;
+        $loadLimited[3] = strval(round((array_sum($conArr) - $marketRoomSumLimited)/array_sum($conArr), 2) * 100);
         $loadLimited[4] = $load[16];
 
         $chartData[0] = $loadLimited;

@@ -309,14 +309,17 @@ class Excel extends Controller {
 
         $chart = new \PHPExcel_Chart( 'chart1', $title, $legend, $pa, true,
             0, NULL, NULL );
-        $chart->setTopLeftPosition('U1');
-        $chart->setBottomRightPosition('AS31');
+        $chart->setTopLeftPosition('R1');
+        $chart->setBottomRightPosition('BP31');
         $ews->addChart($chart);
+
+
+
 
         $hotelList2 = ['Отели','Guesthouse - Kuin Kotonaan', 'Рынок', 'Рынок без KK и Лейкари', 'Выборка'];
         $arr2[0] = $hotelList2;
-        for($i = 0; $i < count($load); $i++){
-            $arr2[$i + 1] = $load[$i];
+        for($i = 0; $i < count($limitedLoad); $i++){
+            $arr2[$i + 1] = $limitedLoad[$i];
         }
 
         //print_r($hotelList);
@@ -325,29 +328,29 @@ class Excel extends Controller {
         $ea->createSheet();
         $ews = $ea->setActiveSheetIndex(1);
         //$ews = $ea->getActiveSheet();
-        $ews->setTitle('Ограниченная загрузка');
+        $ews->setTitle('Ограниченная_загрузка');
         $ews->fromArray($arr2);
 
 
         $dsl2 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$B$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$C$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$D$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$E$1', null, 1),
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$F$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Ограниченная_загрузка!$B$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Ограниченная_загрузка!$C$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Ограниченная_загрузка!$D$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Ограниченная_загрузка!$E$1', null, 1),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Ограниченная_загрузка!$F$1', null, 1),
         );
 
         $xal2 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Загрузка!$A$2:$A$'.($this->days_val + 1), null, 6),
+            new PHPExcel_Chart_DataSeriesValues('String', 'Ограниченная_загрузка!$A$2:$A$'.($this->days_val + 1), null, 6),
         );//Ось X. Указывает координаты для её значения
 
 
         $dsv2 = array(
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$B$2:$B$'.($this->days_val + 1), null, $this->days_val),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$C$2:$C$'.($this->days_val + 1), null, $this->days_val),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$D$2:$D$'.($this->days_val + 1), null, $this->days_val),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$E$2:$E$'.($this->days_val + 1), null, $this->days_val),
-            new PHPExcel_Chart_DataSeriesValues('Number', 'Загрузка!$F$2:$F$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Ограниченная_загрузка!$B$2:$B$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Ограниченная_загрузка!$C$2:$C$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Ограниченная_загрузка!$D$2:$D$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Ограниченная_загрузка!$E$2:$E$'.($this->days_val + 1), null, $this->days_val),
+            new PHPExcel_Chart_DataSeriesValues('Number', 'Ограниченная_загрузка!$F$2:$F$'.($this->days_val + 1), null, $this->days_val),
         );
 
 
@@ -357,7 +360,7 @@ class Excel extends Controller {
 
         $pa2 = new \PHPExcel_Chart_PlotArea(NULL, array($ds2));
         $legend2 = new \PHPExcel_Chart_Legend(\PHPExcel_Chart_Legend::POSITION_RIGHT, NULL, false);
-        $title2 = new \PHPExcel_Chart_Title('Загрузка');
+        $title2 = new \PHPExcel_Chart_Title('Ограниченная_загрузка');
 
         $chart2 = new \PHPExcel_Chart( 'chart1', $title2, $legend2, $pa2, true,
             0, NULL, NULL );
@@ -365,7 +368,9 @@ class Excel extends Controller {
         $chart2->setBottomRightPosition('BD26');
         $ews->addChart($chart2);
 
-        /**/
+
+
+
         $hotelList3 = ['Отели','Guesthouse - Kuin Kotonaan','Hotel Leikari','Leikari "Nature" Bungalows with Terrace',
             'Апартаменты', 'Kotkan Residenssi Apartments', 'Guest House Nina Art', 'Guesthouse Lokinlaulu', 'The Grand Karhu',
             'Kartanohotelli Karhulan Hovi', 'Hotelli Merikotka', 'Hotelli Kotola', 'Kesähostelli Kärkisaari', 'Hotel Villa Vanessa',
@@ -439,8 +444,8 @@ class Excel extends Controller {
 
         $chart3 = new \PHPExcel_Chart( 'chart1', $title3, $legend3, $pa3, true,
             0, NULL, NULL );
-        $chart3->setTopLeftPosition('S1');
-        $chart3->setBottomRightPosition('BQ26');
+        $chart3->setTopLeftPosition('R1');
+        $chart3->setBottomRightPosition('BP26');
         $ews->addChart($chart3);
         /**/
         $writer = \PHPExcel_IOFactory::createWriter($ea, 'Excel2007');
