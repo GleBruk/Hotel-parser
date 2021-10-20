@@ -135,7 +135,7 @@ class Curl extends Controller {
 
     function loadCard($url){
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://' . $url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_COOKIEFILE,__DIR__ . '/cookie.txt');
         //curl_setopt($ch, CURLOPT_PROXY,'213.79.122.82:8080');

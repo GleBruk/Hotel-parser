@@ -22,6 +22,7 @@ class Booking extends Controller{
         $conModel = $this->model('ConstantsModel');
         $constants = $conModel->getConstants();
 
+        //$this->days_val
         for ($i = 0; $i < $this->days_val; $i++) {
             $t = strtotime('+' . $i . ' day 00:00:00');
             $сheckin_year = date('y', $t);
@@ -77,17 +78,18 @@ class Booking extends Controller{
     }
 
     public function parseAll($url, $date, $ei = null){
-
-        /*$dataAll = $this->parsePage($url);*/
         try {
             error_clear_last();
             $dataAll = @$this->parsePage($url);
             $error = error_get_last();
             if($ei > 10){
                 error_clear_last();
+                $error = error_get_last();
             }
-            if ($error || $dataAll == null) {
+            if ($error || $dataAll == null && $ei <= 10) {
                 throw new Exception("Ошибка страницы");
+            } elseif ($dataAll == null && $ei > 10){
+                return $dataAll;
             }
 
             //print_r($dataAll);
@@ -110,8 +112,18 @@ class Booking extends Controller{
                     $cardIndex++;
                 }
             }
-            //$cardsContent = $this->parseCard($htmls[0][2]);
-            //print_r($cardsContent);
+            $html = '';
+            $j = 0;
+            while ($html == ''){
+                $html = $this->curl->loadCard($dataAll[2]['url']);
+                $j++;
+                if($j > 10){
+                    echo "<h1>ОШИБКА. КАРТОЧКА НЕ ЗАГРУЖАЕТСЯ. ПРОВЕРЬТЕ ПОДКЛЮЧЕНИЕ К ИНТЕРНЕТУ ИЛИ ПОЗОВИТЕ РАЗРАБОТЧИКА</h1>";
+                    die();
+                }
+            }
+            /*$cardsContent = $this->parseCard($html,$htmls[0][2], $dataAll[2]['hotel_name']);
+            print_r($cardsContent);*/
             for($i = 0; $i < count($dataAll); $i++) {
                 if($cardsContent[$i]['rooms'] == []){
                     echo 'Ошибка';
@@ -145,21 +157,21 @@ class Booking extends Controller{
         }
 
         $pageContent = new Document($content);
-        $items = $pageContent->find('div#hotellist_inner div.sr_item');
+        $items = $pageContent->find('div > div[data-testid="property-card"]');
         foreach($items as $item) {
             $row = [];
-            $hotelName = $item->find('a.js-sr-hotel-link > span')[0]->text();
-            preg_match('~\n(.*)\n~', $hotelName, $a);
-            $hotelName = $a[1];
+            $hotelName = $item->find('div[data-testid="title"]')[0]->text();
+            /*preg_match('~\n(.*)\n~', $hotelName, $a);
+            $hotelName = $a[1];*/
             $row['hotel_name'] = $hotelName;
 
-            $price = $item->find('div.bui-price-display__value')[0]->text();
+            $price = $item->find('div[data-testid="price-and-discounted-price"] > span')[0]->text();
             preg_match('~\d+~', $price, $a);
             $row['price'] = $a[0];
 
-            $url = $item->find('a.js-sr-hotel-link')[0]->attr('href');
-            preg_match('~\n(.*)\n~', $url, $a);
-            $row['url'] = 'www.booking.com' . $a[1];
+            $url = $item->find('a[data-testid="title-link"]')[0]->attr('href');
+            //preg_match('~\n(.*)\n~', $url, $a);
+            $row['url'] = $url;
 
             $data []= $row;
             //
@@ -419,7 +431,7 @@ class Booking extends Controller{
 
                         $day = $days[date("w", strtotime($date))];
                         echo "<br/>" . $date;
-                        echo "<br/><a href='https://" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
+                        echo "<br/><a href='" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
                         if($day == 'Воскресенье'){
                             $load[$i + 1] = strval(round((($karSunCon - $freeRooms) / $karSunCon), 2) * 100);
                             echo "<br/>Константа " . $karSunCon . 'Число комнат ' . $freeRooms;
@@ -432,7 +444,7 @@ class Booking extends Controller{
                         $load[$i + 1] = strval(round((($conArr[$i] - $freeRooms) / $conArr[$i]), 2) * 100);//Загрузка
 
                         echo "<br/>" . $date;
-                        echo "<br/><a href='https://" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
+                        echo "<br/><a ='" . $hotel['url'] . "'>" . $hotel['hotel_name'] . "</a>";
                         echo "<br/>Константа " . $conArr[$i] . 'Число комнат ' . $freeRooms;
                     }
                 }
